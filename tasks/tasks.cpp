@@ -3,6 +3,8 @@
 
 #include "framework.h"
 #include "tasks.h"
+#include <string>     
+#include <vector>  
 
 #define MAX_LOADSTRING 100
 
@@ -58,7 +60,50 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 }
 
 
+class Task {
+private:
+    int id;
+    std::wstring name;
+    std::wstring description;
+    bool status;
 
+public:
+    // Конструктор: статус по умолчанию false
+    Task(int id, const std::wstring& name, const std::wstring& description, bool status = false)
+        : id(id), name(name), description(description), status(status) {}
+
+    // Геттеры
+    int GetId() const { return id; }
+    std::wstring GetName() const { return name; }
+    std::wstring GetDescription() const { return description; }
+    bool GetStatus() const { return status; }
+
+    // Сеттеры
+    void SetName(const std::wstring& newName) { name = newName; }
+    void SetDescription(const std::wstring& newDesc) { description = newDesc; }
+    void SetStatus(bool newStatus) { status = newStatus; }
+};
+
+class TaskManager {
+private:
+    std::vector<Task> tasks;
+    int nextId = 1;  // Счётчик для уникальных ID
+
+public:
+    // Добавить новую задачу, ID проставится автоматически, статус false по умолчанию
+    void AddTask(const std::wstring& name, const std::wstring& description) {
+        tasks.emplace_back(nextId++, name, description, false);
+    }
+
+    // Получить все задачи (пример)
+    const std::vector<Task>& GetTasks() const { return tasks; }
+
+    // Можно добавить методы для удаления, изменения и т.п.
+};
+
+
+// Вектор для хранения задач (глобальный для простоты)
+std::vector<TaskManager> tasks;
 //
 //  ФУНКЦИЯ: MyRegisterClass()
 //
