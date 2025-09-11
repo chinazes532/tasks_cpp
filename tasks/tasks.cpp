@@ -17,6 +17,7 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    Tasks(HWND, UINT, WPARAM, LPARAM);
+INT_PTR CALLBACK    AddTask(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -142,6 +143,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG1), hWnd, Tasks);
                 //DestroyWindow(hWnd);
                 break;
+            case ID_32772: // кнопка Добавить задачу
+                DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG2), hWnd, AddTask);
+                break;
             default:
                 return DefWindowProc(hWnd, message, wParam, lParam);
             }
@@ -189,6 +193,23 @@ INT_PTR CALLBACK Tasks(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
     switch (message) {
     case WM_INITDIALOG:
         SetWindowText(hDlg, L"Трекер задач");  
+        return (INT_PTR)TRUE;
+
+    case WM_COMMAND:
+        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
+        {
+            EndDialog(hDlg, LOWORD(wParam));
+            return (INT_PTR)TRUE;
+        }
+        break;
+    }
+    return (INT_PTR)FALSE;
+}
+
+INT_PTR CALLBACK AddTask(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
+    switch (message) {
+    case WM_INITDIALOG:
+        SetWindowText(hDlg, L"Добавление задачи");
         return (INT_PTR)TRUE;
 
     case WM_COMMAND:
