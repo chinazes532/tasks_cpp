@@ -253,15 +253,15 @@ INT_PTR CALLBACK Tasks(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
         SendMessage(hListBox, LB_RESETCONTENT, 0, 0);
 
         // Получаем задачи и добавляем в ListBox
-        const auto& tasks = g_taskManager.GetTasks();  // Предполагаю, что есть метод GetTasks()
+        const auto& tasks = g_taskManager.GetTasks();  // Предполагаем, что есть метод GetTasks()
         for (size_t i = 0; i < tasks.size(); ++i) {
             const Task& task = tasks[i];
 
             // Формируем строку: "ID: 1 | Имя: TaskName | Описание: Description | Статус: Active"
-            std::wstring itemText = L"ID: " + std::to_wstring(task.id) +
-                L" | Имя: " + task.name +
-                L" | Описание: " + task.description +
-                L" | Статус: " + task.status;
+            std::wstring itemText = L"ID: " + std::to_wstring(task.GetId()) +
+                L" | Имя: " + task.GetName() +
+                L" | Описание: " + task.GetDescription() +
+                L" | Статус: " + (task.GetStatus() ? L"Active" : L"Inactive");
 
             // Добавляем строку в ListBox
             SendMessage(hListBox, LB_ADDSTRING, 0, (LPARAM)itemText.c_str());
