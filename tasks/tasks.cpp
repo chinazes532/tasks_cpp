@@ -261,7 +261,7 @@ INT_PTR CALLBACK Tasks(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
             std::wstring itemText = L"ID: " + std::to_wstring(task.GetId()) +
                 L" | Имя: " + task.GetName() +
                 L" | Описание: " + task.GetDescription() +
-                L" | Статус: " + (task.GetStatus() ? L"Active" : L"Inactive");
+                L" | Статус: " + (task.GetStatus() ? L"Выполнена" : L"Не выполнена");
 
             // Добавляем строку в ListBox
             SendMessage(hListBox, LB_ADDSTRING, 0, (LPARAM)itemText.c_str());
