@@ -251,6 +251,11 @@ INT_PTR CALLBACK Tasks(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
     return (INT_PTR)FALSE;
 }
 
+
+// Определение глобальной переменной (только здесь!)
+TaskManager g_taskManager;
+
+// Функции диалогов
 INT_PTR CALLBACK AddTask(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
     switch (message) {
     case WM_INITDIALOG:
@@ -258,8 +263,33 @@ INT_PTR CALLBACK AddTask(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) 
         return (INT_PTR)TRUE;
 
     case WM_COMMAND:
-        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-        {
+        switch (LOWORD(wParam)) {
+        case IDC_BUTTON1: {
+            // Буферы для текста
+            wchar_t name[256] = { 0 };
+            wchar_t description[1024] = { 0 };
+
+            // Получаем текст из полей
+            GetDlgItemText(hDlg, IDC_EDIT1, name, _countof(name));
+            GetDlgItemText(hDlg, IDC_EDIT2, description, _countof(description));
+
+            // Проверка на пустое имя
+            if (wcslen(name) == 0) {
+                MessageBox(hDlg, L"Введите имя задачи.", L"Ошибка", MB_OK | MB_ICONERROR);
+                break;
+            }
+
+            // Добавляем задачу
+            g_taskManager.AddTask(name, description);
+
+            // Очищаем поля и показываем успех
+            SetDlgItemText(hDlg, IDC_EDIT1, L"");
+            SetDlgItemText(hDlg, IDC_EDIT2, L"");
+            MessageBox(hDlg, L"Задача добавлена!", L"Успех", MB_OK | MB_ICONINFORMATION);
+            break;
+        }
+        case IDOK:
+        case IDCANCEL:
             EndDialog(hDlg, LOWORD(wParam));
             return (INT_PTR)TRUE;
         }
