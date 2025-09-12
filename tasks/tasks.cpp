@@ -233,16 +233,50 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
     return (INT_PTR)FALSE;
 }
 
+// Определение глобальной переменной (только здесь!)
+TaskManager g_taskManager;
+
 
 INT_PTR CALLBACK Tasks(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
     switch (message) {
-    case WM_INITDIALOG:
-        SetWindowText(hDlg, L"Трекер задач");  
+    case WM_INITDIALOG: {
+        SetWindowText(hDlg, L"Трекер задач");
+
+        // Получаем дескриптор ListBox (замени IDC_LIST1 на свой ID, если отличается)
+        HWND hListBox = GetDlgItem(hDlg, IDC_LIST1);
+        if (!hListBox) {
+            MessageBox(hDlg, L"ListBox не найден!", L"Ошибка", MB_OK | MB_ICONERROR);
+            return (INT_PTR)TRUE;
+        }
+
+        // Очищаем список (на случай повторного открытия)
+        SendMessage(hListBox, LB_RESETCONTENT, 0, 0);
+
+        // Получаем задачи и добавляем в ListBox
+        const auto& tasks = g_taskManager.GetTasks();  // Предполагаю, что есть метод GetTasks()
+        for (size_t i = 0; i < tasks.size(); ++i) {
+            const Task& task = tasks[i];
+
+            // Формируем строку: "ID: 1 | Имя: TaskName | Описание: Description | Статус: Active"
+            std::wstring itemText = L"ID: " + std::to_wstring(task.id) +
+                L" | Имя: " + task.name +
+                L" | Описание: " + task.description +
+                L" | Статус: " + task.status;
+
+            // Добавляем строку в ListBox
+            SendMessage(hListBox, LB_ADDSTRING, 0, (LPARAM)itemText.c_str());
+        }
+
+        // Если задач нет, добавляем сообщение
+        if (tasks.empty()) {
+            SendMessage(hListBox, LB_ADDSTRING, 0, (LPARAM)L"Нет задач.");
+        }
+
         return (INT_PTR)TRUE;
+    }
 
     case WM_COMMAND:
-        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-        {
+        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL) {
             EndDialog(hDlg, LOWORD(wParam));
             return (INT_PTR)TRUE;
         }
@@ -252,8 +286,6 @@ INT_PTR CALLBACK Tasks(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
 }
 
 
-// Определение глобальной переменной (только здесь!)
-TaskManager g_taskManager;
 
 // Функции диалогов
 INT_PTR CALLBACK AddTask(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
