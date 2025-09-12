@@ -328,5 +328,5 @@ INT_PTR CALLBACK AddTask(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) 
         break;
     }
     return (INT_PTR)FALSE;
-}
+} // -_-
 
