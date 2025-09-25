@@ -18,6 +18,8 @@
 #define IDC_EDIT1                       1002
 #define IDC_EDIT2                       1003
 #define IDC_LIST1                       1004
+#define IDC_BTN_DELETE                  1008
+#define IDC_BTN_COMPLETE                1009
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define IDC_STATIC                      -1
@@ -29,7 +31,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        131
 #define _APS_NEXT_COMMAND_VALUE         32773
-#define _APS_NEXT_CONTROL_VALUE         1005
+#define _APS_NEXT_CONTROL_VALUE         1011
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif
