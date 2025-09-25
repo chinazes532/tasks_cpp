@@ -257,7 +257,7 @@ INT_PTR CALLBACK Tasks(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam) {
         for (size_t i = 0; i < tasks.size(); ++i) {
             const Task& task = tasks[i];
 
-            // Формируем строку: "ID: 1 | Имя: TaskName | Описание: Description | Статус: Active"
+            // Формируем строку: "ID: 1 | Имя: TaskName | Описание: Description | Статус: Active."
             std::wstring itemText = L"ID: " + std::to_wstring(task.GetId()) +
                 L" | Имя: " + task.GetName() +
                 L" | Описание: " + task.GetDescription() +
